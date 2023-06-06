@@ -1,45 +1,72 @@
 #include <iostream>
 #include <fstream>
 
-// ±âº» Å¬·¡½º
-class CalculatorBase {
+// ê¸°ë³¸ í´ë˜ìŠ¤
+class Calculator0 {
 public:
-    virtual double calculate(double operand1, double operand2) const = 0;  // °¡»ó ÇÔ¼ö
+	virtual double calculate(double operand1, double operand2) const = 0;  // ê°€ìƒ í•¨ìˆ˜
 };
 
-// °è»ê±â Å¬·¡½º ÅÛÇÃ¸´
+// ê³„ì‚°ê¸° í´ë˜ìŠ¤ í…œí”Œë¦¿
 template <typename T>
-class Calculator : public CalculatorBase {
+class Calculator1 : public Calculator0 {
 public:
-    T calculate(T operand1, T operand2) const override {
-        return operand1 + operand2;  // ±âº»ÀûÀ¸·Î µ¡¼ÀÀ» ¼öÇàÇÏµµ·Ï ¿¹½Ã·Î ±¸ÇöÇÔ
-    }
+	T calculate(T operand1, T operand2) const override {
+		return operand1 + operand2;  // ê¸°ë³¸ì ìœ¼ë¡œ ë§ì…ˆì„ ìˆ˜í–‰í•˜ë„ë¡ ì˜ˆì‹œë¡œ êµ¬í˜„í•¨
+	}
+};
+
+template <typename T>
+class Calculator2 : public Calculator0 {
+public:
+	T calculate(T operand1, T operand2) const override {
+		return operand1 - operand2;  // ê¸°ë³¸ì ìœ¼ë¡œ ë§ì…ˆì„ ìˆ˜í–‰í•˜ë„ë¡ ì˜ˆì‹œë¡œ êµ¬í˜„í•¨
+	}
+};
+
+template <typename T>
+class Calculator3 : public Calculator0 {
+public:
+	T calculate(T operand1, T operand2) const override {
+		return operand1 * operand2;  // ê¸°ë³¸ì ìœ¼ë¡œ ë§ì…ˆì„ ìˆ˜í–‰í•˜ë„ë¡ ì˜ˆì‹œë¡œ êµ¬í˜„í•¨
+	}
+};
+
+template <typename T>
+class Calculator4 : public Calculator0 {
+public:
+	T calculate(T operand1, T operand2) const override {
+		if (operand2 == 0) {
+			throw std::runtime_error("0ìœ¼ë¡œ ë‚˜ëˆŒ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
+		}
+		return operand1 / operand2;
+	}
 };
 
 int main() {
-    // ¹Ì¸® ÀÛ¼ºµÈ °è»ê
-    double operand1 = 10.5;
-    double operand2 = 5.5;
+	// ë¯¸ë¦¬ ì‘ì„±ëœ ê³„ì‚°
+	double operand1 = 10.5;
+	double operand2 = 1;
 
-    CalculatorBase* calculator = new Calculator<double>();
+	Calculator0* Calculator = new Calculator4<double>();
 
-    // ¿¹¿Ü Ã³¸®¸¦ À§ÇÑ try-catch ºí·Ï
-    try {
-        // °è»ê ¼öÇà
-        double result = calculator->calculate(operand1, operand2);
+	// ì˜ˆì™¸ ì²˜ë¦¬ë¥¼ ìœ„í•œ try-catch ë¸”ë¡
+	try {
+		// ê³„ì‚° ìˆ˜í–‰
+		double result = Calculator->calculate(operand1, operand2);
 
-        // °á°ú Ãâ·ÂÀ» ÆÄÀÏ·Î ÀúÀå
-        std::ofstream output("result.txt");
-        output << result;
-        output.close();
+		// ê²°ê³¼ ì¶œë ¥ì„ íŒŒì¼ë¡œ ì €ì¥
+		std::ofstream output("result.txt");
+		output << "ê²°ê³¼: " << result << std::endl;
+		output.close();
 
-        std::cout << "°è»ê °á°ú°¡ result.txt ÆÄÀÏ¿¡ ÀúÀåµÇ¾ú½À´Ï´Ù." << std::endl;
-    }
-    catch (const std::exception& e) {
-        std::cout << "¿À·ù: " << e.what() << std::endl;
-    }
+		std::cout << "ê³„ì‚° ê²°ê³¼ê°€ result.txt íŒŒì¼ì— ì €ì¥ë˜ì—ˆìŠµë‹ˆë‹¤." << std::endl;
+	}
+	catch (const std::exception& e) {
+		std::cout << "ì˜¤ë¥˜: " << e.what() << std::endl;
+	}
 
-    delete calculator;  // µ¿Àû ÇÒ´çµÈ °´Ã¼ ¸Ş¸ğ¸® ÇØÁ¦
+	delete Calculator;  // ë™ì  í• ë‹¹ëœ ê°ì²´ ë©”ëª¨ë¦¬ í•´ì œ
 
-    return 0;
+	return 0;
 }
