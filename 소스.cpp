@@ -48,7 +48,7 @@ int main() {
 	double operand1 = 10.5;
 	double operand2 = 1;
 
-	Calculator0* Calculator = new Calculator4<double>();
+	Calculator0* Calculator = new Calculator3<double>();
 
 	// 예외 처리를 위한 try-catch 블록
 	try {
@@ -60,7 +60,7 @@ int main() {
 		output << "결과: " << result << std::endl;
 		output.close();
 
-		std::cout << "계산 결과가 result.txt 파일에 저장되었습니다." << std::endl;
+		std::cout << "계산 완료" << std::endl;
 	}
 	catch (const std::exception& e) {
 		std::cout << "오류: " << e.what() << std::endl;
