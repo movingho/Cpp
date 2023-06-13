@@ -1,72 +1,66 @@
 #include <iostream>
-#include <fstream>
+#include <string>
+using namespace std;
 
-// 기본 클래스
-class Calculator0 {
+class Shape {
 public:
-	virtual double calculate(double operand1, double operand2) const = 0;  // 가상 함수
+    void paint() {
+        draw();
+    }
+    virtual void draw() {
+        cout << "Shape::draw() called" << endl;
+    }
 };
 
-// 계산기 클래스 템플릿
-template <typename T>
-class Calculator1 : public Calculator0 {
+class Circle : public Shape {
 public:
-	T calculate(T operand1, T operand2) const override {
-		return operand1 + operand2;  // 기본적으로 덧셈을 수행하도록 예시로 구현함
-	}
+    virtual void draw() {
+        cout << "Circle::draw() called" << endl;
+    }
 };
 
-template <typename T>
-class Calculator2 : public Calculator0 {
+class Rectangle : public Shape {
 public:
-	T calculate(T operand1, T operand2) const override {
-		return operand1 - operand2;  // 기본적으로 덧셈을 수행하도록 예시로 구현함
-	}
+    virtual void draw() {
+        cout << "Rectangle::draw() called" << endl;
+    }
 };
 
-template <typename T>
-class Calculator3 : public Calculator0 {
+class Triangle : public Shape {
 public:
-	T calculate(T operand1, T operand2) const override {
-		return operand1 * operand2;  // 기본적으로 덧셈을 수행하도록 예시로 구현함
-	}
+    virtual void draw() {
+        cout << "Triangle::draw() called" << endl;
+    }
 };
 
-template <typename T>
-class Calculator4 : public Calculator0 {
-public:
-	T calculate(T operand1, T operand2) const override {
-		if (operand2 == 0) {
-			throw std::runtime_error("0으로 나눌 수 없습니다.");
-		}
-		return operand1 / operand2;
-	}
-};
+template<typename T>
+void myprint(T& obj) {
+    obj.paint();
+}
 
 int main() {
-	// 미리 작성된 계산
-	double operand1 = 10.5;
-	double operand2 = 1;
+    string shape;
+    cout << "도형을 입력하세요>>";
+    getline(cin, shape);
 
-	Calculator0* Calculator = new Calculator3<double>();
+    if (shape == "Circle") {
+        Shape* pShape1 = new Circle();
+        myprint(*pShape1);
+        delete pShape1;
+    }
+    else if (shape == "Rectangle") {
+        Shape* pShape2 = new Rectangle();
+        myprint(*pShape2);
+        delete pShape2;
+    }
+    else if (shape == "Triangle") {
+        Shape* pShape3 = new Triangle();
+        myprint(*pShape3);
+        delete pShape3;
+    }
+    else {
+        cout << "도형을 잘못 입력했습니다. 다시 입력 바랍니다.";
+    }
 
-	// 예외 처리를 위한 try-catch 블록
-	try {
-		// 계산 수행
-		double result = Calculator->calculate(operand1, operand2);
-
-		// 결과 출력을 파일로 저장
-		std::ofstream output("result.txt");
-		output << "결과: " << result << std::endl;
-		output.close();
-
-		std::cout << "계산 완료" << std::endl;
-	}
-	catch (const std::exception& e) {
-		std::cout << "오류: " << e.what() << std::endl;
-	}
-
-	delete Calculator;  // 동적 할당된 객체 메모리 해제
-
-	return 0;
+    return 0;
 }
